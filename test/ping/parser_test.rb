@@ -81,6 +81,15 @@ class Ping::ParserTest < MiniTest::Test
       assert_equal "43", issue.number
     end
 
+    should "handle odd repository names" do
+      text = "giant-sequoia-123/scaling_octokitten#43"
+      parser = Ping::Parser.new(text)
+      issue = parser.issues.first
+
+      assert_equal "giant-sequoia-123/scaling_octokitten", issue.repository
+      assert_equal "43", issue.number
+    end
+
     should "extract multiple references" do
       text = "You should look at #2 and #4 because #5 fixes codetree/codetree#6"
       parser = Ping::Parser.new(text)

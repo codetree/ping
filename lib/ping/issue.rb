@@ -7,7 +7,7 @@ module Ping
       need|needs|needed|require|requires|required
     /ix
 
-    RepositoryName = /[a-z0-9][a-z0-9-]*\/[a-z0-9][a-z0-9-]*/
+    RepositoryName = /[a-z0-9][a-z0-9-]*\/[a-z0-9][a-z0-9\-_]*/
 
     Pattern = /
       (?:^|\W)                    # beginning of string or non-word char
