@@ -22,7 +22,7 @@ module Ping
       )
     /ix
 
-    # See http://rubular.com/r/LxWUfwmPhM
+    # See http://rubular.com/r/bb7Ks0JK9l
 
     def initialize(qualifier, repository, number)
       @qualifier = qualifier
