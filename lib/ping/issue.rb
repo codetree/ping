@@ -12,8 +12,8 @@ module Ping
     Pattern = /
       (?:^|\W)                    # beginning of string or non-word char
       (?:(#{Qualifiers})(?:\s))?  # qualifier (optional)
-      (#{RepositoryName})?        # repository name (optional)
-      \#(\d+)                     # issue number
+      (?:(#{RepositoryName})?     # repository name (optional)
+      \#|(?:GH\-))(\d+)           # issue number
       (?=
         \.+[ \t\W]|               # dots followed by space or non-word character
         \.+$|                     # dots at end of line
@@ -22,7 +22,7 @@ module Ping
       )
     /ix
 
-    # See http://rubular.com/r/bb7Ks0JK9l
+    # See http://rubular.com/r/bb7Ks0JK9l now http://rubular.com/r/evB7RlvUfI
 
     def initialize(qualifier, repository, number)
       @qualifier = qualifier
