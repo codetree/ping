@@ -130,4 +130,110 @@ class Ping::ParserTest < MiniTest::Test
       assert_equal "43", issue.number
     end
   end
+
+  context "GH-issues" do
+    should "extract single issue references" do
+      text = "See GH-43"
+      parser = Ping::Parser.new(text)
+      issue = parser.issues.first
+
+      assert_equal nil, issue.qualifier
+      assert_equal nil, issue.repository
+      assert_equal "43", issue.number
+    end
+
+    should "extract lower case issue references" do
+      text = "See gh-43"
+      parser = Ping::Parser.new(text)
+      issue = parser.issues.first
+
+      assert_equal nil, issue.qualifier
+      assert_equal nil, issue.repository
+      assert_equal "43", issue.number
+    end
+
+    should "extract single issue references followed by a period" do
+      text = "See GH-43."
+      parser = Ping::Parser.new(text)
+      issue = parser.issues.first
+
+      assert_equal nil, issue.qualifier
+      assert_equal nil, issue.repository
+      assert_equal "43", issue.number
+    end
+
+    should "extract close qualifiers" do
+      %w{fix fixes fixed close closes closed resolve resolves resolved}.each do |q|
+        text = "#{q} GH-55"
+        parser = Ping::Parser.new(text)
+        issue = parser.issues.first
+
+        assert_equal q, issue.qualifier
+        assert_equal nil, issue.repository
+        assert_equal "55", issue.number
+      end
+    end
+
+    should "extract dependency qualifiers" do
+      %w{need needs needed require requires required}.each do |q|
+        text = "#{q} GH-123"
+        parser = Ping::Parser.new(text)
+        issue = parser.issues.first
+
+        assert_equal q, issue.qualifier
+        assert_equal nil, issue.repository
+        assert_equal "123", issue.number
+      end
+    end
+
+    should "extract multiple references" do
+      text = "You should look at GH-2 and GH-4 because GH-5 fixes codetree/codetree#6"
+      parser = Ping::Parser.new(text)
+
+      assert parser.issues.include?(2)
+      assert parser.issues.include?(4)
+      assert parser.issues.include?(5)
+      assert parser.issues.include?(6)
+    end
+
+    should "not extract similar non-qualifiers" do
+      text = "afixes GH-43"
+      parser = Ping::Parser.new(text)
+      issue = parser.issues.first
+
+      assert_equal nil, issue.qualifier
+      assert_equal nil, issue.repository
+      assert_equal "43", issue.number
+    end
+
+    should "not choke on case" do
+      text = "FIxEs GH-43"
+      parser = Ping::Parser.new(text)
+      issue = parser.issues.first
+
+      assert_equal "FIxEs", issue.qualifier
+      assert_equal nil, issue.repository
+      assert_equal "43", issue.number
+    end
+
+    should "require only one space between qualifier and issue" do
+      text = "fixes   GH-43"
+      parser = Ping::Parser.new(text)
+      issue = parser.issues.first
+
+      assert_equal nil, issue.qualifier
+      assert_equal nil, issue.repository
+      assert_equal "43", issue.number
+    end
+
+    should "require at least one space before GH" do
+      text = "fixes codetree/codetreeGH-99 and fixes GH-43"
+      parser = Ping::Parser.new(text)
+      issue = parser.issues.first
+
+      assert_equal "fixes", issue.qualifier
+      assert_equal nil, issue.repository
+      assert_equal "43", issue.number
+    end
+  end
 end
