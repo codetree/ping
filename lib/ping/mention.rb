@@ -1,6 +1,6 @@
 module Ping
   class Mention
-    attr_reader :username
+    attr_accessor :username
 
     Pattern = /
       (?:^|\W)                    # beginning of string or non-word char

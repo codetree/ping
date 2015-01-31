@@ -1,6 +1,6 @@
 module Ping
-  class Issue
-    attr_reader :qualifier, :repository, :number
+  class IssueReference
+    attr_accessor :qualifier, :repository, :number
 
     Qualifiers = /
       close|closes|closed|fix|fixes|fixed|resolve|resolves|resolved|
@@ -33,6 +33,21 @@ module Ping
     def self.extract(text)
       text.scan(Pattern).map do |match|
         self.new(*match)
+      end
+    end
+
+    def self.replace(text, &block)
+      text.gsub(Pattern) do |phrase|
+        replacement = yield(phrase, self.new(*phrase.scan(Pattern).first))
+
+        if replacement.is_a?(IssueReference)
+          new_phrase = phrase[0] == " " ? " " : "" # fix leading space
+          new_phrase << replacement.qualifier + " " if replacement.qualifier
+          new_phrase << replacement.repository.to_s
+          new_phrase << "#" + replacement.number.to_s
+        else
+          replacement
+        end
       end
     end
 

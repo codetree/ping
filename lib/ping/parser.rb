@@ -1,5 +1,5 @@
 require "ping/mention"
-require "ping/issue"
+require "ping/issue_reference"
 
 module Ping
   class Parser
@@ -13,8 +13,12 @@ module Ping
       Ping::Mention.extract(text)
     end
 
-    def issues
-      Ping::Issue.extract(text)
+    def issue_references
+      Ping::IssueReference.extract(text)
+    end
+
+    def replace_issue_references(&block)
+      Ping::IssueReference.replace(text, &block)
     end
   end
 end
