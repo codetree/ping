@@ -129,6 +129,16 @@ class Ping::ParserTest < MiniTest::Test
       assert_equal nil, issue.repository
       assert_equal "43", issue.number
     end
+
+    should "handle variable casing in repo names" do
+      text = "needs Liquid-Labs/rf-app-admin-web-app#2"
+      parser = Ping::Parser.new(text)
+      issue = parser.issue_references.first
+
+      assert_equal "needs", issue.qualifier
+      assert_equal "Liquid-Labs/rf-app-admin-web-app", issue.repository
+      assert_equal "2", issue.number
+    end
   end
 
   context "#issue_references with GH-XXX syntax" do
