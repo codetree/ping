@@ -7,9 +7,20 @@ module Ping
       need|needs|needed|require|requires|required
     /ix
 
+    Domain = "https://github.com/"
+
     RepositoryName = /[a-z0-9][a-z0-9\-]*\/[a-z0-9][a-z0-9\-_]*/ix
 
-    Pattern = /
+    # Match references of the form:
+    #
+    # - #123
+    # - codetree/feedback#123
+    # - GH-123
+    # - needs #123
+    # - etc...
+    #
+    # See http://rubular.com/r/evB7RlvUfI
+    ShortPattern = /
       (?:^|\W)                    # beginning of string or non-word char
       (?:(#{Qualifiers})(?:\s))?  # qualifier (optional)
       (?:(#{RepositoryName})?     # repository name (optional)
@@ -22,7 +33,26 @@ module Ping
       )
     /ix
 
-    # See http://rubular.com/r/bb7Ks0JK9l now http://rubular.com/r/evB7RlvUfI
+    # Match references of the form:
+    #
+    # - https://github.com/codetree/feedback/issues/123
+    # - https://github.com/codetree/feedback/pulls/123
+    # - needs https://github.com/codetree/feedback/issues/123
+    # - etc...
+    UrlPattern = /
+      (?:^|\W)                    # beginning of string or non-word char
+      (?:(#{Qualifiers})(?:\s))?  # qualifier (optional)
+      https:\/\/github.com\/
+      (#{RepositoryName})         # repository name
+      \/(?:issues|pulls)\/
+      (\d+)                       # issue number
+      (?=
+        \.+[ \t\W]|               # dots followed by space or non-word character
+        \.+$|                     # dots at end of line
+        [^0-9a-zA-Z_.]|           # non-word character except dot
+        $                         # end of line
+      )
+    /ix
 
     def initialize(qualifier, repository, number)
       @qualifier = qualifier
@@ -31,24 +61,35 @@ module Ping
     end
 
     def self.extract(text)
-      text.scan(Pattern).map do |match|
-        self.new(*match)
+      [ShortPattern, UrlPattern].inject([]) do |memo, pattern|
+        memo.tap do |m|
+          text.scan(pattern).each do |match|
+            m << self.new(*match)
+          end
+        end
       end
     end
 
     def self.replace(text, &block)
-      text.gsub(Pattern) do |phrase|
-        replacement = yield(phrase, self.new(*phrase.scan(Pattern).first))
-
-        if replacement.is_a?(IssueReference)
-          new_phrase = phrase[0] == " " ? " " : "" # fix leading space
-          new_phrase << replacement.qualifier + " " if replacement.qualifier
-          new_phrase << replacement.repository.to_s
-          new_phrase << "#" + replacement.number.to_s
-        else
-          replacement
+      [ShortPattern, UrlPattern].each do |pattern|
+        text = text.gsub(pattern) do |match|
+          ref = self.new(*match.scan(pattern).first)
+          replace_match(match, ref, &block)
         end
       end
+
+      text
+    end
+
+    def self.replace_match(match, ref, &block)
+      replacement = yield(match, ref)
+      return replacement unless replacement.is_a?(IssueReference)
+
+      # Reformat the given issue reference replacement to match
+      new_phrase = match[0] == " " ? " " : "" # fix leading space
+      new_phrase << replacement.qualifier + " " if replacement.qualifier
+      new_phrase << replacement.repository.to_s
+      new_phrase << "#" + replacement.number.to_s
     end
 
     def ==(other)
