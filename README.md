@@ -1,4 +1,4 @@
-# Ping
+# Ping [![Circle CI](https://circleci.com/gh/codetree/ping.svg?style=svg)](https://circleci.com/gh/codetree/ping)
 
 A little library for extracting GitHub @mentions and issue references.
 
