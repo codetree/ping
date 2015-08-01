@@ -2,14 +2,12 @@ module Ping
   class IssueReference
     attr_accessor :qualifier, :repository, :number
 
-    Qualifiers = /
+    QUALIFIERS = /
       close|closes|closed|fix|fixes|fixed|resolve|resolves|resolved|
       need|needs|needed|require|requires|required
     /ix
 
-    Domain = "https://github.com/"
-
-    RepositoryName = /[a-z0-9][a-z0-9\-]*\/[a-z0-9][a-z0-9\-_]*/ix
+    REPOSITORY_NAME = /[a-z0-9][a-z0-9\-]*\/[a-z0-9][a-z0-9\-_]*/ix
 
     # Match references of the form:
     #
@@ -20,10 +18,10 @@ module Ping
     # - etc...
     #
     # See http://rubular.com/r/evB7RlvUfI
-    ShortPattern = /
+    SHORT_PATTERN = /
       (?:^|\W)                    # beginning of string or non-word char
-      (?:(#{Qualifiers})(?:\s))?  # qualifier (optional)
-      (?:(#{RepositoryName})?     # repository name (optional)
+      (?:(#{QUALIFIERS})(?:\s))?  # qualifier (optional)
+      (?:(#{REPOSITORY_NAME})?     # repository name (optional)
       \#|(?:GH\-))(\d+)           # issue number
       (?=
         \.+[ \t\W]|               # dots followed by space or non-word character
@@ -39,11 +37,11 @@ module Ping
     # - https://github.com/codetree/feedback/pulls/123
     # - needs https://github.com/codetree/feedback/issues/123
     # - etc...
-    UrlPattern = /
+    URL_PATTERN = /
       (?:^|\W)                    # beginning of string or non-word char
-      (?:(#{Qualifiers})(?:\s))?  # qualifier (optional)
+      (?:(#{QUALIFIERS})(?:\s))?  # qualifier (optional)
       https:\/\/github.com\/
-      (#{RepositoryName})         # repository name
+      (#{REPOSITORY_NAME})         # repository name
       \/(?:issues|pulls)\/
       (\d+)                       # issue number
       (?=
@@ -61,7 +59,7 @@ module Ping
     end
 
     def self.extract(text)
-      [ShortPattern, UrlPattern].inject([]) do |memo, pattern|
+      [SHORT_PATTERN, URL_PATTERN].inject([]) do |memo, pattern|
         memo.tap do |m|
           text.scan(pattern).each do |match|
             m << self.new(*match)
@@ -71,7 +69,7 @@ module Ping
     end
 
     def self.replace(text, &block)
-      [ShortPattern, UrlPattern].each do |pattern|
+      [SHORT_PATTERN, URL_PATTERN].each do |pattern|
         text = text.gsub(pattern) do |match|
           ref = self.new(*match.scan(pattern).first)
           replace_match(match, ref, &block)

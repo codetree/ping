@@ -2,7 +2,7 @@ module Ping
   class Mention
     attr_accessor :username
 
-    Pattern = /
+    PATTERN = /
       (?:^|\W)                    # beginning of string or non-word char
       @((?>[a-z0-9][a-z0-9-]*))   # @username
       (?!\/)                      # without a trailing slash
@@ -19,7 +19,7 @@ module Ping
     end
 
     def self.extract(text)
-      text.scan(Pattern).flatten.
+      text.scan(PATTERN).flatten.
         map(&:downcase).uniq.map do |username|
           self.new(username)
         end

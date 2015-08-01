@@ -2,7 +2,7 @@ module Ping
   class Size
     attr_accessor :points
 
-    Pattern = /
+    PATTERN = /
       (?:^|\W)             # beginning of string or non-word char
       (?:size|points):     # keyword
       (\d+)                # point value
@@ -17,7 +17,7 @@ module Ping
     # See http://rubular.com/r/7u67dIwXuk
 
     def self.extract(text)
-      matches = text.scan(Pattern)
+      matches = text.scan(PATTERN)
       matches.any? ? self.new(matches.last.first.to_i) : self.new(nil)
     end
 
