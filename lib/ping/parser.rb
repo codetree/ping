@@ -1,6 +1,5 @@
 require 'ping/mention'
 require 'ping/issue_reference'
-require 'ping/size'
 
 module Ping
   class Parser
@@ -20,10 +19,6 @@ module Ping
 
     def replace_issue_references(&block)
       Ping::IssueReference.replace(text, &block)
-    end
-
-    def size
-      Ping::Size.extract(text)
     end
   end
 end
