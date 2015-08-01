@@ -19,9 +19,9 @@ module Ping
     end
 
     def self.extract(text)
-      text.scan(PATTERN).flatten.
-        map(&:downcase).uniq.map do |username|
-          self.new(username)
+      text.scan(PATTERN).flatten
+        .map(&:downcase).uniq.map do |username|
+          new(username)
         end
     end
 

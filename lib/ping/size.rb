@@ -18,7 +18,7 @@ module Ping
 
     def self.extract(text)
       matches = text.scan(PATTERN)
-      matches.any? ? self.new(matches.last.first.to_i) : self.new(nil)
+      matches.any? ? new(matches.last.first.to_i) : new(nil)
     end
 
     def initialize(points)

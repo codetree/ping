@@ -21,7 +21,7 @@ module Ping
     SHORT_PATTERN = /
       (?:^|\W)                    # beginning of string or non-word char
       (?:(#{QUALIFIERS})(?:\s))?  # qualifier (optional)
-      (?:(#{REPOSITORY_NAME})?     # repository name (optional)
+      (?:(#{REPOSITORY_NAME})?    # repository name (optional)
       \#|(?:GH\-))(\d+)           # issue number
       (?=
         \.+[ \t\W]|               # dots followed by space or non-word character
@@ -41,7 +41,7 @@ module Ping
       (?:^|\W)                    # beginning of string or non-word char
       (?:(#{QUALIFIERS})(?:\s))?  # qualifier (optional)
       https:\/\/github.com\/
-      (#{REPOSITORY_NAME})         # repository name
+      (#{REPOSITORY_NAME})        # repository name
       \/(?:issues|pulls)\/
       (\d+)                       # issue number
       (?=
@@ -62,7 +62,7 @@ module Ping
       [SHORT_PATTERN, URL_PATTERN].inject([]) do |memo, pattern|
         memo.tap do |m|
           text.scan(pattern).each do |match|
-            m << self.new(*match)
+            m << new(*match)
           end
         end
       end
@@ -71,7 +71,7 @@ module Ping
     def self.replace(text, &block)
       [SHORT_PATTERN, URL_PATTERN].each do |pattern|
         text = text.gsub(pattern) do |match|
-          ref = self.new(*match.scan(pattern).first)
+          ref = new(*match.scan(pattern).first)
           replace_match(match, ref, &block)
         end
       end
@@ -79,15 +79,15 @@ module Ping
       text
     end
 
-    def self.replace_match(match, ref, &block)
+    def self.replace_match(match, ref, &_block)
       replacement = yield(match, ref)
       return replacement unless replacement.is_a?(IssueReference)
 
       # Reformat the given issue reference replacement to match
-      new_phrase = match[0] == " " ? " " : "" # fix leading space
-      new_phrase << replacement.qualifier + " " if replacement.qualifier
+      new_phrase = match[0] == ' ' ? ' ' : '' # fix leading space
+      new_phrase << replacement.qualifier + ' ' if replacement.qualifier
       new_phrase << replacement.repository.to_s
-      new_phrase << "#" + replacement.number.to_s
+      new_phrase << '#' + replacement.number.to_s
     end
 
     def ==(other)

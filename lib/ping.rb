@@ -1,2 +1,2 @@
-require "ping/version"
-require "ping/parser"
+require 'ping/version'
+require 'ping/parser'

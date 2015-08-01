@@ -1,6 +1,6 @@
-require "ping/mention"
-require "ping/issue_reference"
-require "ping/size"
+require 'ping/mention'
+require 'ping/issue_reference'
+require 'ping/size'
 
 module Ping
   class Parser
