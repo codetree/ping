@@ -2,3 +2,9 @@ inherit_from: .rubocop_todo.yml
 
 Style/RegexpLiteral:
   AllowInnerSlashes: true
+
+AllCops:
+  Exclude:
+    - 'test/ping/*'
+    - 'ping.gemspec'
+    - 'lib/ping/version.rb'

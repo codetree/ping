@@ -20,9 +20,9 @@ module Ping
 
     def self.extract(text)
       text.scan(PATTERN).flatten
-        .map(&:downcase).uniq.map do |username|
-          new(username)
-        end
+          .map(&:downcase).uniq.map do |username|
+            new(username)
+          end
     end
 
     def ==(username)
