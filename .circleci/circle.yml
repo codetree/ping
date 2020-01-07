@@ -41,4 +41,4 @@ workflows:
   version: 2
   build_and_test:
     jobs:
-      - build_and_functional_test
+      - functional_tests
