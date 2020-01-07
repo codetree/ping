@@ -15,14 +15,16 @@ jobs:
     steps:
       - checkout
 
+      - run:
+        name: check dependencies
+        command: |
+          bundle -v
+          bundle exec ruby -v
+
       - restore_cache:
           keys:
             - ping-bundle-v2-{{ checksum "Gemfile.lock" }}
             - ping-bundle-v2-
-
-      - run:
-          name: Which bundler?
-          command: bundle -v
 
       - save_cache:
           keys:
