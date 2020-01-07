@@ -26,13 +26,17 @@ jobs:
             - ping-bundle-v2-{{ checksum "Gemfile.lock" }}
             - ping-bundle-v2-
 
+      - run:
+          name: install gems
+          command: bundle install && bundle clean
+
       - save_cache:
           key: ping-bundle-v2-{{ checksum "Gemfile.lock" }}
           paths:
             - vendor/bundle
 
       - run:
-          name: run_functional_test
+          name: run functional tests
           command: bundle exec rake test
 
       - store_test_results:
