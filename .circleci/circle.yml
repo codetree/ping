@@ -8,7 +8,7 @@ jobs:
     working_directory: ~/repos/ping
 
     docker:
-      - image: circleci/ruby:2.6-jessie-node
+      - image: circleci/ruby:2.6.4-buster-node
         environment:
           <<: *environment
 
