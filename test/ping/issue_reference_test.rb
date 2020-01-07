@@ -40,7 +40,7 @@ class Ping::IssueReferenceTest < MiniTest::Test
     end
 
     should 'extract dependency qualifiers' do
-      %w(need needs needed require requires required needed-by).each do |q|
+      %w(need needs needed require requires required needed-by epic).each do |q|
         text = "#{q} #123"
         issue = extract_first(text)
 
@@ -163,7 +163,7 @@ class Ping::IssueReferenceTest < MiniTest::Test
     end
 
     should 'extract dependency qualifiers' do
-      %w(need needs needed require requires required).each do |q|
+      %w(need needs needed require requires required epic).each do |q|
         text = "#{q} GH-123"
         issue = extract_first(text)
 
@@ -260,7 +260,7 @@ class Ping::IssueReferenceTest < MiniTest::Test
     end
 
     should 'extract dependency qualifiers' do
-      %w(need needs needed require requires required).each do |q|
+      %w(need needs needed require requires required epic).each do |q|
         text = "#{q} https://github.com/codetree/feedback/issues/123"
         issue = extract_first(text)
 
