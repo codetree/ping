@@ -16,10 +16,10 @@ jobs:
       - checkout
 
       - run:
-        name: check dependencies
-        command: |
-          bundle -v
-          bundle exec ruby -v
+          name: check dependencies
+          command: |
+            bundle -v
+            bundle exec ruby -v
 
       - restore_cache:
           keys:
@@ -27,8 +27,7 @@ jobs:
             - ping-bundle-v2-
 
       - save_cache:
-          keys:
-            - ping-bundle-v2-{{ checksum "Gemfile.lock" }}
+          key: ping-bundle-v2-{{ checksum "Gemfile.lock" }}
           paths:
             - vendor/bundle
 
