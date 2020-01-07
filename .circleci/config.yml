@@ -23,7 +23,7 @@ jobs:
 
       - restore_cache:
           keys:
-            - ping-bundle-v2-{{ checksum "Gemfile.lock" }}
+            - ping-bundle-v2-{{ checksum "ping.gemspec" }}
             - ping-bundle-v2-
 
       - run:
@@ -31,7 +31,7 @@ jobs:
           command: bundle install && bundle clean
 
       - save_cache:
-          key: ping-bundle-v2-{{ checksum "Gemfile.lock" }}
+          key: ping-bundle-v2-{{ checksum "ping.gemspec" }}
           paths:
             - vendor/bundle
 
