@@ -40,7 +40,7 @@ class Ping::IssueReferenceTest < MiniTest::Test
     end
 
     should 'extract dependency qualifiers' do
-      %w(need needs needed require requires required needed-by).each do |q|
+      %w(need needs needed require requires required).each do |q|
         text = "#{q} #123"
         issue = extract_first(text)
 
