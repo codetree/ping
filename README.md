@@ -16,9 +16,47 @@ Or install it yourself as:
 
     $ gem install ping
 
-## Usage
+## Basic Usage
 
-TODO: Write usage instructions here
+Simply load a new parser object and extract issue references and mentions. Here are examples.
+
+#### issue references
+
+``` ruby
+parser = Ping::Parser.new('closed codetree/ping#25')
+parser.issue_references # => [#<Ping::IssueReference:0x000056099c3cf400 @number="25", @qualifier="closed", @repository='codetree/ping'>]
+```
+
+#### mentions
+
+``` ruby
+parser = Ping::Mention.new('Hey @djreimer, please look into the bug.')
+parser.mentions # => [#<Ping::Mention:0x000055ad151f43d0 @username="djreimer">]
+```
+
+## Configuration
+
+gem provided some default qualifiers to extract issue references
+
+``` ruby
+DEFAULT_QUALIFIERS = [
+  'close', 'closes', 'closed', 'fix', 'fixes', 'fixed', 'need', 'needs', 'needed',
+  'require', 'requires', 'required', 'resolve', 'resolves', 'resolved'
+]
+```
+
+but you can also define your own qualifiers along with default qualifiers
+
+``` ruby
+## config/initializers/ping.rb
+
+require 'ping'
+
+Ping.configure do |config|
+  config.qualifiers = Ping::DEFAULT_QUALIFIERS.push(*['epic' 'needed-by'])
+end
+```
+** Note: qualifiers must be an array of qualifier words
 
 ## Contributing
 
