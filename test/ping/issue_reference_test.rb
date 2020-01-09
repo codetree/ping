@@ -14,8 +14,8 @@ class Ping::IssueReferenceTest < MiniTest::Test
       text = 'See #43'
       issue = extract_first(text)
 
-      assert_equal nil, issue.qualifier
-      assert_equal nil, issue.repository
+      assert_nil issue.qualifier
+      assert_nil issue.repository
       assert_equal '43', issue.number
     end
 
@@ -23,8 +23,8 @@ class Ping::IssueReferenceTest < MiniTest::Test
       text = 'See #43.'
       issue = extract_first(text)
 
-      assert_equal nil, issue.qualifier
-      assert_equal nil, issue.repository
+      assert_nil issue.qualifier
+      assert_nil issue.repository
       assert_equal '43', issue.number
     end
 
@@ -34,7 +34,7 @@ class Ping::IssueReferenceTest < MiniTest::Test
         issue = extract_first(text)
 
         assert_equal q, issue.qualifier
-        assert_equal nil, issue.repository
+        assert_nil issue.repository
         assert_equal '55', issue.number
       end
     end
@@ -45,7 +45,7 @@ class Ping::IssueReferenceTest < MiniTest::Test
         issue = extract_first(text)
 
         assert_equal q, issue.qualifier
-        assert_equal nil, issue.repository
+        assert_nil issue.repository
         assert_equal '123', issue.number
       end
     end
@@ -54,7 +54,7 @@ class Ping::IssueReferenceTest < MiniTest::Test
       text = 'codetree/codetree#43'
       issue = extract_first(text)
 
-      assert_equal nil, issue.qualifier
+      assert_nil issue.qualifier
       assert_equal 'codetree/codetree', issue.repository
       assert_equal '43', issue.number
     end
@@ -90,8 +90,8 @@ class Ping::IssueReferenceTest < MiniTest::Test
       text = 'afixes #43'
       issue = extract_first(text)
 
-      assert_equal nil, issue.qualifier
-      assert_equal nil, issue.repository
+      assert_nil issue.qualifier
+      assert_nil issue.repository
       assert_equal '43', issue.number
     end
 
@@ -100,7 +100,7 @@ class Ping::IssueReferenceTest < MiniTest::Test
       issue = extract_first(text)
 
       assert_equal 'FIxEs', issue.qualifier
-      assert_equal nil, issue.repository
+      assert_nil issue.repository
       assert_equal '43', issue.number
     end
 
@@ -108,8 +108,8 @@ class Ping::IssueReferenceTest < MiniTest::Test
       text = 'fixes   #43'
       issue = extract_first(text)
 
-      assert_equal nil, issue.qualifier
-      assert_equal nil, issue.repository
+      assert_nil issue.qualifier
+      assert_nil issue.repository
       assert_equal '43', issue.number
     end
 
@@ -128,8 +128,8 @@ class Ping::IssueReferenceTest < MiniTest::Test
       text = 'See GH-43'
       issue = extract_first(text)
 
-      assert_equal nil, issue.qualifier
-      assert_equal nil, issue.repository
+      assert_nil issue.qualifier
+      assert_nil issue.repository
       assert_equal '43', issue.number
     end
 
@@ -137,8 +137,8 @@ class Ping::IssueReferenceTest < MiniTest::Test
       text = 'See gh-43'
       issue = extract_first(text)
 
-      assert_equal nil, issue.qualifier
-      assert_equal nil, issue.repository
+      assert_nil issue.qualifier
+      assert_nil issue.repository
       assert_equal '43', issue.number
     end
 
@@ -146,8 +146,8 @@ class Ping::IssueReferenceTest < MiniTest::Test
       text = 'See GH-43.'
       issue = extract_first(text)
 
-      assert_equal nil, issue.qualifier
-      assert_equal nil, issue.repository
+      assert_nil issue.qualifier
+      assert_nil issue.repository
       assert_equal '43', issue.number
     end
 
@@ -157,7 +157,7 @@ class Ping::IssueReferenceTest < MiniTest::Test
         issue = extract_first(text)
 
         assert_equal q, issue.qualifier
-        assert_equal nil, issue.repository
+        assert_nil issue.repository
         assert_equal '55', issue.number
       end
     end
@@ -168,7 +168,7 @@ class Ping::IssueReferenceTest < MiniTest::Test
         issue = extract_first(text)
 
         assert_equal q, issue.qualifier
-        assert_equal nil, issue.repository
+        assert_nil issue.repository
         assert_equal '123', issue.number
       end
     end
@@ -187,8 +187,8 @@ class Ping::IssueReferenceTest < MiniTest::Test
       text = 'afixes GH-43'
       issue = extract_first(text)
 
-      assert_equal nil, issue.qualifier
-      assert_equal nil, issue.repository
+      assert_nil issue.qualifier
+      assert_nil issue.repository
       assert_equal '43', issue.number
     end
 
@@ -197,7 +197,7 @@ class Ping::IssueReferenceTest < MiniTest::Test
       issue = extract_first(text)
 
       assert_equal 'FIxEs', issue.qualifier
-      assert_equal nil, issue.repository
+      assert_nil issue.repository
       assert_equal '43', issue.number
     end
 
@@ -205,8 +205,8 @@ class Ping::IssueReferenceTest < MiniTest::Test
       text = 'fixes   GH-43'
       issue = extract_first(text)
 
-      assert_equal nil, issue.qualifier
-      assert_equal nil, issue.repository
+      assert_nil issue.qualifier
+      assert_nil issue.repository
       assert_equal '43', issue.number
     end
 
@@ -215,7 +215,7 @@ class Ping::IssueReferenceTest < MiniTest::Test
       issue = extract_first(text)
 
       assert_equal 'fixes', issue.qualifier
-      assert_equal nil, issue.repository
+      assert_nil issue.repository
       assert_equal '43', issue.number
     end
   end
@@ -225,7 +225,7 @@ class Ping::IssueReferenceTest < MiniTest::Test
       text = 'See https://github.com/codetree/feedback/issues/43'
       issue = extract_first(text)
 
-      assert_equal nil, issue.qualifier
+      assert_nil issue.qualifier
       assert_equal 'codetree/feedback', issue.repository
       assert_equal '43', issue.number
     end
@@ -234,7 +234,7 @@ class Ping::IssueReferenceTest < MiniTest::Test
       text = 'See https://github.com/codetree/feedback/pulls/43'
       issue = extract_first(text)
 
-      assert_equal nil, issue.qualifier
+      assert_nil issue.qualifier
       assert_equal 'codetree/feedback', issue.repository
       assert_equal '43', issue.number
     end
@@ -243,7 +243,7 @@ class Ping::IssueReferenceTest < MiniTest::Test
       text = 'See https://github.com/codetree/feedback/issues/43.'
       issue = extract_first(text)
 
-      assert_equal nil, issue.qualifier
+      assert_nil issue.qualifier
       assert_equal 'codetree/feedback', issue.repository
       assert_equal '43', issue.number
     end
@@ -287,7 +287,7 @@ class Ping::IssueReferenceTest < MiniTest::Test
       text = 'afixes https://github.com/codetree/feedback/issues/43'
       issue = extract_first(text)
 
-      assert_equal nil, issue.qualifier
+      assert_nil issue.qualifier
       assert_equal 'codetree/feedback', issue.repository
       assert_equal '43', issue.number
     end
@@ -305,7 +305,7 @@ class Ping::IssueReferenceTest < MiniTest::Test
       text = 'fixes   https://github.com/codetree/feedback/issues/43'
       issue = extract_first(text)
 
-      assert_equal nil, issue.qualifier
+      assert_nil issue.qualifier
       assert_equal 'codetree/feedback', issue.repository
       assert_equal '43', issue.number
     end
