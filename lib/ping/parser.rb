@@ -1,3 +1,4 @@
+require "ping/config"
 require 'ping/mention'
 require 'ping/issue_reference'
 
