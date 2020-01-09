@@ -1,6 +1,10 @@
 require File.dirname(__FILE__) + '/../test_helper.rb'
 
 class Ping::IssueReferenceTest < MiniTest::Test
+  def setup
+    Ping.reset
+  end
+
   def extract(text)
     Ping::IssueReference.extract(text)
   end
@@ -120,6 +124,37 @@ class Ping::IssueReferenceTest < MiniTest::Test
       assert_equal 'needs', issue.qualifier
       assert_equal 'Liquid-Labs/rf-app-admin-web-app', issue.repository
       assert_equal '2', issue.number
+    end
+
+    context '#with custom configuration' do
+      setup do
+        @custom_qualifiers = %w(epic needed-by)
+        Ping.configure do |config|
+          config.qualifiers = Ping::Config::DEFAULT_QUALIFIERS.push(*@custom_qualifiers)
+        end
+      end
+
+      should 'extract default qualifiers' do
+        Ping::Config::DEFAULT_QUALIFIERS.each do |q|
+          text = "#{q} #123"
+          issue = extract_first(text)
+
+          assert_equal q, issue.qualifier
+          assert_nil issue.repository
+          assert_equal '123', issue.number
+        end
+      end
+
+      should 'extract custom qualifiers' do
+        @custom_qualifiers.each do |q|
+          text = "#{q} #123"
+          issue = extract_first(text)
+
+          assert_equal q, issue.qualifier
+          assert_nil issue.repository
+          assert_equal '123', issue.number
+        end
+      end
     end
   end
 
@@ -252,7 +287,6 @@ class Ping::IssueReferenceTest < MiniTest::Test
       %w(fix fixes fixed close closes closed resolve resolves resolved).each do |q|
         text = "#{q} https://github.com/codetree/feedback/issues/55"
         issue = extract_first(text)
-
         assert_equal q, issue.qualifier
         assert_equal 'codetree/feedback', issue.repository
         assert_equal '55', issue.number
@@ -308,6 +342,26 @@ class Ping::IssueReferenceTest < MiniTest::Test
       assert_nil issue.qualifier
       assert_equal 'codetree/feedback', issue.repository
       assert_equal '43', issue.number
+    end
+
+    context '#with custom configuration' do
+      setup do
+        @custom_qualifiers = %w(epic needed-by)
+        Ping.configure do |config|
+          config.qualifiers = @custom_qualifiers
+        end
+      end
+
+      should 'extract custom qualifiers' do
+        @custom_qualifiers.each do |q|
+          text = "#{q} https://github.com/codetree/feedback/issues/123"
+          issue = extract_first(text)
+
+          assert_equal q, issue.qualifier
+          assert_equal 'codetree/feedback', issue.repository
+          assert_equal '123', issue.number
+        end
+      end
     end
   end
 

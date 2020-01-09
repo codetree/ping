@@ -7,7 +7,7 @@ module Ping
       @((?>[a-z0-9][a-z0-9-]*))   # @username
       (?!\/)                      # without a trailing slash
       (?=
-        \.+[ \t\W]|               # dots followed by space or non-word character
+        \.+[ \t]|                 # dots followed by space or non-word character
         \.+$|                     # dots at end of line
         [^0-9a-zA-Z_.]|           # non-word character except dot
         $                         # end of line
