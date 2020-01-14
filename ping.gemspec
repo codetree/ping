@@ -6,8 +6,8 @@ require 'ping/version'
 Gem::Specification.new do |spec|
   spec.name                   = 'ping'
   spec.version                = Ping::VERSION
-  spec.authors                = ['Derrick Reimer']
-  spec.email                  = ['derrickreimer@gmail.com']
+  spec.authors                = ['Codetree', 'Derrick Reimer']
+  spec.email                  = ['support@codetree.com', 'derrickreimer@gmail.com']
   spec.summary                = 'Parse @mentions and issue references'
   spec.description            = 'A little library for parsing GitHub @mentions and issue references'
   spec.homepage               = 'https://github.com/codetree/ping'
