@@ -65,3 +65,7 @@ end
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create a new Pull Request
+
+## Updating RubyGems
+1. Create an annotated tag `git tag -a v0.1.0 -m "msg with the tag`
+2. Push tag to Github `github push --tags`
