@@ -42,8 +42,35 @@ jobs:
       - store_test_results:
           path: test_results
 
+  publish_to_rubygems:
+    working_directory: ~/repos/ping
+
+    docker:
+      - image: circleci/ruby:2.6.4-buster-node
+        environment:
+          <<: *environment
+
+    steps:
+      - checkout
+
+      - run:
+          name: setup Rubygems
+          command: bash .circleci/setup-rubygems.sh
+
+      - run:
+          name: publish to Rubygems
+          command: |
+            gem build ping.gemspec
+            gem push "ping-$(git describe --tags).gem"
+
 workflows:
   version: 2
   build_and_test:
     jobs:
       - functional_tests
+      - publish_to_rubygems:
+          filters:
+            tags:
+              only: /.*/
+            branches:
+              ignore: /.*/
