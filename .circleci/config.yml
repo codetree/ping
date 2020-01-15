@@ -61,7 +61,7 @@ jobs:
           name: publish to Rubygems
           command: |
             gem build ping.gemspec
-            gem push "ping-${$(git describe --abbrev=0 --tags):1}.gem"
+            gem push "ping-$(git describe --abbrev=0 --tags | cut -c 2-).gem"
 
 workflows:
   version: 2
