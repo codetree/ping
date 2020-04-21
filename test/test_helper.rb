@@ -1,6 +1,8 @@
-$LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
+# frozen_string_literal: true
 
-require 'ping'
+$LOAD_PATH.unshift 'lib'
+
 require 'minitest/autorun'
 require 'shoulda-context'
 require 'mocha/api'
+require 'ping'

@@ -1,4 +1,6 @@
-require "ping/config"
+# frozen_string_literal: true
+
+require 'ping/config'
 require 'ping/mention'
 require 'ping/issue_reference'
 
