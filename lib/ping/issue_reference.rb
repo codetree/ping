@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Ping
   class IssueReference
     attr_accessor :qualifier, :repository, :number
@@ -82,10 +84,9 @@ module Ping
         return replacement unless replacement.is_a?(IssueReference)
 
         # Reformat the given issue reference replacement to match
-        new_phrase = match[0] == ' ' ? ' ' : '' # fix leading space
-        new_phrase << replacement.qualifier + ' ' if replacement.qualifier
-        new_phrase << replacement.repository.to_s
-        new_phrase << '#' + replacement.number.to_s
+        lead_in = match[0] == ' ' ? ' ' : '' # fix leading space
+        lead_in += replacement.qualifier + ' ' if replacement.qualifier
+        lead_in + replacement.repository.to_s + '#' + replacement.number.to_s
       end
     end
 

@@ -27,8 +27,8 @@ module Ping
           end
     end
 
-    def ==(username)
-      username == self.username
+    def ==(other)
+      other == username
     end
 
     def to_s
