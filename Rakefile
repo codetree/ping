@@ -1,20 +1,18 @@
-#!/usr/bin/env rake
+# frozen_string_literal: true
+
 require 'bundler/gem_tasks'
 require 'rake/testtask'
+require 'rubocop/rake_task'
 
+desc 'Run tests'
+task default: :test
 Rake::TestTask.new do |t|
   t.libs << 'lib'
   t.pattern = 'test/**/*_test.rb'
   t.verbose = true
 end
 
-desc 'Run tests'
-task default: :test
-
 # append to the default rake task
-require 'rubocop/rake_task'
 RuboCop::RakeTask.new
 
-task :default do
-  Rake::Task['rubocop'].invoke
-end
+Rake::Task['test'].enhance ['rubocop']

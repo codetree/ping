@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 module Ping
   class IssueReference
     attr_accessor :qualifier, :repository, :number
 
-    REPOSITORY_NAME = /[a-z0-9][a-z0-9\-]*\/[a-z0-9][a-z0-9\-_]*/ix
+    REPOSITORY_NAME = %r{[a-z0-9][a-z0-9\-]*/[a-z0-9][a-z0-9\-_]*}ix.freeze
 
     class << self
       def qualifier_regex
@@ -40,12 +42,12 @@ module Ping
       # - needs https://github.com/codetree/feedback/issues/123
       # - etc...
       def url_pattern
-        /
+        %r{
           (?:^|\W)                         # beginning of string or non-word char
           (?:(#{qualifier_regex})(?:\s))?  # qualifier (optional)
-          https:\/\/github.com\/
+          https://github.com/
           (#{REPOSITORY_NAME})             # repository name
-          \/(?:issues|pulls)\/
+          /(?:issues|pulls)/
           (\d+)                            # issue number
           (?=
             \.+[ \t]|                      # dots followed by space or non-word character
@@ -53,7 +55,7 @@ module Ping
             [^0-9a-zA-Z_.]|                # non-word character except dot
             $                              # end of line
           )
-        /ix
+        }ix
       end
 
       def extract(text)
@@ -82,10 +84,9 @@ module Ping
         return replacement unless replacement.is_a?(IssueReference)
 
         # Reformat the given issue reference replacement to match
-        new_phrase = match[0] == ' ' ? ' ' : '' # fix leading space
-        new_phrase << replacement.qualifier + ' ' if replacement.qualifier
-        new_phrase << replacement.repository.to_s
-        new_phrase << '#' + replacement.number.to_s
+        lead_in = match[0] == ' ' ? ' ' : '' # fix leading space
+        lead_in += replacement.qualifier + ' ' if replacement.qualifier
+        lead_in + replacement.repository.to_s + '#' + replacement.number.to_s
       end
     end
 

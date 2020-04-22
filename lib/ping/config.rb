@@ -1,7 +1,7 @@
+# frozen_string_literal: true
+
 module Ping
   class << self
-    attr_accessor :config
-
     def configure
       yield config
     end
@@ -11,7 +11,7 @@ module Ping
     end
 
     # Here we are implementing a reset method because
-    # for global values like this, it’s best to clean up before/after
+    # for global values like this, it's best to clean up before/after
     # each spec to ensure the system is back to a default state.
     def reset
       @config = Config.new
@@ -21,10 +21,10 @@ module Ping
   class Config
     attr_accessor :qualifiers
 
-    DEFAULT_QUALIFIERS = [
-      'close', 'closes', 'closed', 'fix', 'fixes', 'fixed', 'need', 'needs', 'needed',
-      'require', 'requires', 'required', 'resolve', 'resolves', 'resolved'
-    ]
+    DEFAULT_QUALIFIERS = %w[
+      close closes closed fix fixes fixed need needs needed
+      require requires required resolve resolves resolved
+    ].freeze
 
     def initialize
       @qualifiers = DEFAULT_QUALIFIERS

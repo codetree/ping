@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require File.dirname(__FILE__) + '/../test_helper.rb'
 
 class Ping::IssueReferenceTest < MiniTest::Test
@@ -33,7 +35,7 @@ class Ping::IssueReferenceTest < MiniTest::Test
     end
 
     should 'extract close qualifiers' do
-      %w(fix fixes fixed close closes closed resolve resolves resolved).each do |q|
+      %w[fix fixes fixed close closes closed resolve resolves resolved].each do |q|
         text = "#{q} #55"
         issue = extract_first(text)
 
@@ -44,7 +46,7 @@ class Ping::IssueReferenceTest < MiniTest::Test
     end
 
     should 'extract dependency qualifiers' do
-      %w(need needs needed require requires required).each do |q|
+      %w[need needs needed require requires required].each do |q|
         text = "#{q} #123"
         issue = extract_first(text)
 
@@ -128,9 +130,9 @@ class Ping::IssueReferenceTest < MiniTest::Test
 
     context '#with custom configuration' do
       setup do
-        @custom_qualifiers = %w(epic needed-by)
+        @custom_qualifiers = %w[epic needed-by]
         Ping.configure do |config|
-          config.qualifiers = Ping::Config::DEFAULT_QUALIFIERS.push(*@custom_qualifiers)
+          config.qualifiers = Ping::Config::DEFAULT_QUALIFIERS + @custom_qualifiers
         end
       end
 
@@ -187,7 +189,7 @@ class Ping::IssueReferenceTest < MiniTest::Test
     end
 
     should 'extract close qualifiers' do
-      %w(fix fixes fixed close closes closed resolve resolves resolved).each do |q|
+      %w[fix fixes fixed close closes closed resolve resolves resolved].each do |q|
         text = "#{q} GH-55"
         issue = extract_first(text)
 
@@ -198,7 +200,7 @@ class Ping::IssueReferenceTest < MiniTest::Test
     end
 
     should 'extract dependency qualifiers' do
-      %w(need needs needed require requires required).each do |q|
+      %w[need needs needed require requires required].each do |q|
         text = "#{q} GH-123"
         issue = extract_first(text)
 
@@ -284,7 +286,7 @@ class Ping::IssueReferenceTest < MiniTest::Test
     end
 
     should 'extract close qualifiers' do
-      %w(fix fixes fixed close closes closed resolve resolves resolved).each do |q|
+      %w[fix fixes fixed close closes closed resolve resolves resolved].each do |q|
         text = "#{q} https://github.com/codetree/feedback/issues/55"
         issue = extract_first(text)
         assert_equal q, issue.qualifier
@@ -294,7 +296,7 @@ class Ping::IssueReferenceTest < MiniTest::Test
     end
 
     should 'extract dependency qualifiers' do
-      %w(need needs needed require requires required).each do |q|
+      %w[need needs needed require requires required].each do |q|
         text = "#{q} https://github.com/codetree/feedback/issues/123"
         issue = extract_first(text)
 
@@ -346,7 +348,7 @@ class Ping::IssueReferenceTest < MiniTest::Test
 
     context '#with custom configuration' do
       setup do
-        @custom_qualifiers = %w(epic needed-by)
+        @custom_qualifiers = %w[epic needed-by]
         Ping.configure do |config|
           config.qualifiers = @custom_qualifiers
         end

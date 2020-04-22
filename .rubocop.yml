@@ -1,11 +1,44 @@
-inherit_from: .rubocop_todo.yml
-
-Style/RegexpLiteral:
-  AllowInnerSlashes: true
-
 AllCops:
+  TargetRubyVersion: 2.4
   Exclude:
-    - 'test/ping/*'
-    - 'ping.gemspec'
-    - 'lib/ping/version.rb'
+    - 'bin/**/*'
     - 'vendor/**/*'
+    - 'config.ru'
+
+Layout/LineLength:
+  Max: 100
+
+Metrics/AbcSize:
+  Max: 20
+
+Metrics/BlockLength:
+  Max: 30
+  Exclude:
+    - 'test/**/*.rb'
+
+Metrics/ClassLength:
+  Exclude:
+    - 'test/**/*.rb'
+
+Metrics/MethodLength:
+  Max: 15
+  Exclude:
+    - 'test/**/*.rb'
+
+Style/ClassAndModuleChildren:
+  Exclude:
+    - 'test/**/*.rb'
+
+Style/Documentation:
+  Enabled: false
+  Exclude:
+    - 'test/**/*'
+
+Style/HashEachMethods:
+  Enabled: true
+
+Style/HashTransformKeys:
+  Enabled: true
+
+Style/HashTransformValues:
+  Enabled: true
